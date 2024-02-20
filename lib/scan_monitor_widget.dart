@@ -13,6 +13,7 @@ class ScanMonitorWidget extends StatefulWidget {
   final FocusNode? textFiledNode;
   final GlobalKey<EditableTextState>? scanKey;
   final void Function(String) onSubmit;
+  final bool pauseFocusFlag;
 
   //是否开启焦点轮询
   final bool focusLooper;
@@ -27,6 +28,7 @@ class ScanMonitorWidget extends StatefulWidget {
     required this.onSubmit,
     this.focusLooper = false,
     this.focusLooperDuration = const Duration(seconds: 2),
+    this.pauseFocusFlag = false
   }) : super(key: key);
 
   @override
@@ -83,7 +85,7 @@ class _ScanMonitorWidgetState extends State<ScanMonitorWidget> {
   void _checkScanAble() {
     if (_isVisible) {
       final textFileHasFocus = widget.textFiledNode != null && widget.textFiledNode!.hasFocus;
-      if (!textFileHasFocus) {
+      if (!textFileHasFocus && !widget.pauseFocusFlag) {
         _requestFocus();
       }
       if (widget.focusLooper) {
